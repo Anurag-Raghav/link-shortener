@@ -5,7 +5,7 @@ require('./db/conn');
 const hbs = require('hbs');
 const port = process.env.PORT || 8000;
 // static
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname,'/public')));
 
 app.use(express.json({extended: false}));
 app.use(express.urlencoded({extended:false}))

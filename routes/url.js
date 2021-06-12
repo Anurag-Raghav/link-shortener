@@ -12,11 +12,6 @@ router.use(express.json({extended: false}))
 router.post('/shorten', async (req,res)=>{
     const longUrl= req.body.longUrl;
     const baseUrl = process.env.baseUrl;
-
-    if(!validUrl.isUri(baseUrl)){
-        return res.status(401).json('invalid base url')
-    }
-
     // Create url code
 
     const urlCode = shortid.generate();
@@ -27,8 +22,8 @@ router.post('/shorten', async (req,res)=>{
         try{
             let url = await Url.findOne({longUrl});
             if(url){
-                res.render('result',{
-                    reply:url.shortUrl
+                res.render('index',{
+                    output:url.shortUrl
                 })
             }else{
                 const shortUrl = baseUrl + '/' + urlCode;
@@ -41,16 +36,19 @@ router.post('/shorten', async (req,res)=>{
                 });
 
                 await url.save();
+                res.render('index',{
+                    output:url.shortUrl
+                })
             }
         }catch(err){
-            res.render('result',{
-                reply: 'server error'
+            res.render('index',{
+                output: 'server error'
             })
             res.status(501);
         }
     }else{
-        res.render('result', {
-            reply: 'invalid url'
+        res.render('index', {
+            output: 'invalid url'
         })
         res.status(401);
     }

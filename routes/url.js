@@ -27,8 +27,8 @@ router.post('/shorten', async (req,res)=>{
         try{
             let url = await Url.findOne({longUrl});
             if(url){
-                res.render('index',{
-                    output:url.shortUrl
+                res.render('result',{
+                    reply:url.shortUrl
                 })
             }else{
                 const shortUrl = baseUrl + '/' + urlCode;
@@ -43,14 +43,14 @@ router.post('/shorten', async (req,res)=>{
                 await url.save();
             }
         }catch(err){
-            res.render('index',{
-                output: 'server error'
+            res.render('result',{
+                reply: 'server error'
             })
             res.status(501);
         }
     }else{
-        res.render('index', {
-            output: 'invalid url'
+        res.render('result', {
+            reply: 'invalid url'
         })
         res.status(401);
     }
